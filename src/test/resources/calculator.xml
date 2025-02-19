@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tests.Calculator Test Suite" parallel="tests" thread-count="2">
+    <test name="SumTests">
+        <groups>
+            <run>
+                <exclude name="sum" />
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.SumTest" />
+        </classes>
+    </test>
+    <test name="MinusTests">
+        <classes>
+            <class name="tests.MinusTest" />
+        </classes>
+    </test>
+    <test name="MultiplyTests">
+        <groups>
+            <run>
+                <exclude name="multiply" />
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.MultiplyTest" />
+        </classes>
+    </test>
+    <test name="DivideTests">
+        <classes>
+            <class name="tests.DivideTest" />
+        </classes>
+    </test>
+</suite>
