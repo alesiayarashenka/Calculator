@@ -1,44 +1,44 @@
 package tests;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.equalTo;
 
 public class MultiplyTest extends BaseTest {
-    @DataProvider(name = "whole numbers")
-    public Object[][] wholeNumbersForProduct() {
+    @DataProvider(name = "positive numbers")
+    public Object[][] wholeDoubleNumbersForProduct() {
         return new Object[][]{
-                {5, 2},
-                {6, 4},
-                {7, 6},
-                {10, 8},
+                {5, 2, 10},
+                {10, 10, 100},
+                {1, 0, 0},
+                {11.1, 1, 11.1},
+                {1.1, 1.2, 1.32},
         };
     }
 
-    @DataProvider(name = "zero number")
-    public Object[][] multiplyWithZeroNumber() {
+    @DataProvider(name = "negative number")
+    public Object[][] multiplyWithNegativeNumber() {
         return new Object[][]{
-                {1, 0},
-                {3, 0},
-                {5, 0},
-                {7, 0},
+                {-2, 2, -4},
+                {-2.5, 2.5, -6.25},
+                {-2, -2, 4},
+                {-1.1, -1.2, 1.32},
         };
     }
 
-    @Test(dataProvider = "whole numbers", priority = 2, description = "product of whole numbers",
+    @Test(dataProvider = "positive numbers", priority = 2, description = "product of positive numbers",
             retryAnalyzer = Retry.class)
-    public void productWholeIntTest(int x, int y) {
+    public void productWholeIntTest(double x, double y, double z) {
         double a = calculator.multiply(x, y);
-        assertThat(a, notNullValue());
+        assertThat(a, equalTo(z));
     }
 
-    @Test(dataProvider = "zero number", priority = 1, description = "product zero and numbers",
+    @Test(dataProvider = "negative number", priority = 1, description = "product of negative numbers",
             retryAnalyzer = Retry.class, groups = "multiply")
-    public void minusZeroFromNumbersTest(int x, int y) {
+    public void minusNegativeNumbersTest(double x, double y, double z) {
         double a = calculator.multiply(x, y);
-        Assert.assertEquals(a, 0);
+        assertThat(a, equalTo(z));
     }
 }

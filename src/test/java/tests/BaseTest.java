@@ -6,7 +6,6 @@ import org.testng.annotations.Listeners;
 
 
 @Listeners(TestListener.class)
-
 public class BaseTest{
 
     Calculator calculator;
@@ -19,7 +18,6 @@ public class BaseTest{
 
     @AfterMethod
     public void endTest(){
-        calculator = new Calculator();
         System.out.println("Test ended");
     }
 }

@@ -1,44 +1,50 @@
 package tests;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.equalTo;
 
 public class MinusTest extends BaseTest {
-    @DataProvider(name = "whole numbers")
-    public Object[][] wholeNumbersForSubtraction() {
+    @DataProvider(name = "positive numbers")
+    public Object[][] positiveNumbersForSubtraction() {
         return new Object[][]{
-                {5, 2},
-                {6, 4},
-                {7, 6},
-                {10, 8},
+                {5, 2, 3},
+                {6.5, 4, 2.5},
+                {7.1, 6.1, 1},
+                {7.1, 0, 7.1},
+                {10, 0, 10},
+                {7.5, 6.2, 1.3},
+                {3, 4, -1},
+                {3.5, 4, -0.5},
         };
     }
 
-    @DataProvider(name = "zero number")
-    public Object[][] minusWithZeroNumber() {
+    @DataProvider(name = "negative numbers")
+    public Object[][] negativeNumbersForSubtraction() {
         return new Object[][]{
-                {1, 0},
-                {3, 0},
-                {5, 0},
-                {7, 0},
+                {-5, 2, -7},
+                {-6.5, 4, -10.5},
+                {-7.1, 6.1, -13.2},
+                {-7.1, 0, -7.1},
+                {-10, 0, -10},
+                {-7.5, -6.2, -1.3},
+                {-3, -4, 1},
         };
     }
 
-    @Test(dataProvider = "whole numbers", priority = 2, description = "subtraction of whole numbers",
+    @Test(dataProvider = "positive numbers", priority = 2, description = "subtraction of whole and double positive numbers",
             retryAnalyzer = Retry.class)
-    public void minusWholeIntTest(int x, int y) {
+    public void minusWholeIntTest(double x, double y, double z) {
         double a = calculator.minus(x, y);
-        assertThat(a, notNullValue());
+        assertThat(a, equalTo(z));
     }
 
-    @Test(dataProvider = "zero number", priority = 1, description = "subtraction zero from numbers",
+    @Test(dataProvider = "negative numbers", priority = 1, description = "subtraction of whole and double negative numbers",
             retryAnalyzer = Retry.class)
-    public void minusZeroFromNumbersTest(int x, int y) {
+    public void minusZeroFromNumbersTest(double x, double y, double z) {
         double a = calculator.minus(x, y);
-        Assert.assertEquals(x, a);
+        assertThat(a, equalTo(z));
     }
 }

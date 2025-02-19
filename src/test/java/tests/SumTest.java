@@ -5,48 +5,40 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.equalTo;
 
 public class SumTest extends BaseTest {
 
-    @DataProvider(name = "whole numbers")
-    public Object[][] wholeNumbersForSum() {
+    @DataProvider(name = "positive numbers")
+    public Object[][] doubleNumbersForSum() {
         return new Object[][]{
-                {1, 2},
-                {3, 4},
-                {5, 6},
-                {7, 8},
+                {2, 3, 5},
+                {5.2, 6, 11.2},
+                {1.1, 0, 1.1},
+                {1000, 10, 1010},
+                {1, 0, 1}
         };
     }
 
-    @DataProvider(name = "zero number")
-    public Object[][] sumWithZeroNumber() {
+    @DataProvider(name = "negative numbers")
+    public Object[][] negativeNumbersForSum() {
         return new Object[][]{
-                {1, 0},
-                {3, 0},
-                {5, 0},
-                {7, 0},
+                {-2, 3, 1},
+                {-2, -2, -4},
+                {-2.1, 3.1, 1},
+                {-2.1, -3.1, -5.2},
+                {-1, 0, -1}
         };
     }
 
-    @Test(dataProvider = "whole numbers", priority = 2, description = "addition of whole numbers",
+    @Test(dataProvider = "positive numbers", priority = 2, description = "addition of whole and double positive numbers",
             retryAnalyzer = Retry.class, groups = "sum")
-    public void sumWholeIntTest(int x, int y) {
+    public void sumDoubleIntTest(double x, double y, double z) {
         double a = calculator.sum(x, y);
-        assertThat(a, notNullValue());
+        assertThat(a, equalTo(z));
     }
 
-    @Test(priority = 4, description = "addition of double numbers",
-            retryAnalyzer = Retry.class)
-    public void sumDoubleIntTest() {
-        double x = 12.0;
-        double y = 13.4;
-        double a = calculator.sum(x, y);
-        Assert.assertEquals(a, 25.4);
-    }
-
-    @Test(priority = 1, description = "addition of double numbers",
-            retryAnalyzer = Retry.class)
+    @Test(priority = 4, description = "addition of double numbers", retryAnalyzer = Retry.class)
     public void sumTheSameIntTest() {
         double x = 2;
         double y = 2;
@@ -54,10 +46,10 @@ public class SumTest extends BaseTest {
         Assert.assertEquals(a, x * 2);
     }
 
-    @Test(dataProvider = "zero number", priority = 3, description = "addition zero to numbers",
+    @Test(dataProvider = "negative numbers", priority = 1, description = "addition of whole and double negative numbers",
             retryAnalyzer = Retry.class)
-    public void sumZeroWithNumbersTest(int x, int y) {
+    public void sumNegativeIntTest(double x, double y, double z) {
         double a = calculator.sum(x, y);
-        Assert.assertEquals(x, a);
+        assertThat(a, equalTo(z));
     }
 }
